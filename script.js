@@ -1,3 +1,27 @@
+document.addEventListener('DOMContentLoaded', fetchRecommendations);
+
+function fetchRecommendations() {
+    const recommendations = ['The Matrix', 'Inception', 'Interstellar', 'The Godfather', 'Jurassic Park'];
+    const apiKey = 'f7f22d30'; // Substitua 'SUA_API_KEY' pela sua chave da API OMDB
+    const recommendationsElement = document.getElementById('recommendations');
+
+    recommendations.forEach(title => {
+        const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const movieElement = document.createElement('div');
+                movieElement.innerHTML = `
+                    <img src="${data.Poster}" alt="${data.Title}">
+                    <p>${data.Title}</p>
+                `;
+                recommendationsElement.appendChild(movieElement);
+            })
+            .catch(error => console.error('Erro ao buscar recomendações:', error));
+    });
+}
+
 document.getElementById('search-button').addEventListener('click', () => {
     const searchTerm = document.getElementById('search-input').value;
     if (!searchTerm) {
@@ -18,7 +42,6 @@ document.getElementById('search-button').addEventListener('click', () => {
         });
 });
 
-// Função para exibir os resultados da busca
 function displaySearchResults(data) {
     const resultsSection = document.getElementById('results-section');
 
@@ -32,34 +55,25 @@ function displaySearchResults(data) {
         <div>
             <h3>${movie.Title}</h3>
             <p>${movie.Year}</p>
-            <img src="${movie.Poster}" alt="Poster" onerror="this.onerror=null;this.src='fallback-image-url';">
+            <img src="${movie.Poster}" alt="Poster">
         </div>
     `).join('');
 
     resultsSection.innerHTML = resultsMarkup;
 }
 
-// Função para buscar e exibir recomendações do dia ao carregar a página
-document.addEventListener('DOMContentLoaded', fetchRecommendations);
+document.getElementById('clear-button').addEventListener('click', () => {
+    document.getElementById('results-section').innerHTML = '';
+    document.getElementById('search-input').value = '';
+});
 
-function fetchRecommendations() {
-    const recommendations = ['The Matrix', 'Inception', 'Interstellar', 'The Godfather', 'Jurassic Park']; // Exemplo de filmes para recomendações
-    const apiKey = 'f7f22d30'; // Substitua 'SUA_API_KEY' pela sua chave da API OMDB
-    const recommendationsElement = document.getElementById('recommendations');
+document.getElementById('signup-button').addEventListener('click', () => {
+    const email = document.getElementById('signup-email').value;
+    if (!email) {
+        alert('Por favor, insira um email');
+        return;
+    }
 
-    recommendations.forEach(title => {
-        const url = `https://www.omdbapi.com/?t=${encodeURIComponent(title)}&apikey=${apiKey}`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const movieElement = document.createElement('div');
-                movieElement.innerHTML = `
-                    <img src="${data.Poster}" alt="${data.Title}">
-                    <p>${data.Title}</p>
-                `;
-                recommendationsElement.appendChild(movieElement);
-            })
-            .catch(error => console.error('Erro ao buscar recomendações:', error));
-    });
-}
+    alert('Cadastro realizado com sucesso! Você receberá nossas recomendações em breve.');
+    document.getElementById('signup-email').value = '';
+});

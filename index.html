@@ -2,19 +2,34 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Busca de Filmes e Recomendações</title>
+    <title>Golden Movie</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="header">
+        <img src="./img/logo.png" alt="Logo" id="logo"> 
+    </div>
     <div id="recommendations-section">
-        <h2>Recomendações do Dia</h2>
+        <h2>Recomendações do Dia:</h2>
         <div id="recommendations"></div>
     </div>
     <div id="search-section">
+        <h2>Encontre seu filme:</h2>
         <input type="text" id="search-input" placeholder="Digite o nome do filme...">
         <button id="search-button">Buscar</button>
+        <button id="clear-button">Limpar Busca</button>
     </div>
-    <div id="results-section"></div>
+    
+    <div id="results-section">
+        <img src="./img/popcorn.gif" alt="popcorn" id="popcorn">
+    </div>
+
+    <div id="signup-section">
+        <h2>Faça seu Cadastro:</h2>
+        <label>Receba em primeira mão as novidades do cinema</label>
+        <input type="email" id="signup-email" placeholder="Seu email...">
+        <button id="signup-button">Cadastrar</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
