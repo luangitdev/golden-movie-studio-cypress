@@ -6,6 +6,80 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+}
+
+.intro-section {
+    width: 80%;
+    max-width: 600px; 
+    background-color: #fff;
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center; 
+    background-color: #ffffff; 
+    color: #858383; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+}
+
+.intro-section h1 {
+    margin: 0 0 10px; /* Remove a margem padrão do topo e adiciona um pouco de espaço abaixo do título */
+    color: #d17b00; /* Cor do título, um pouco mais escuro para se destacar */
+}
+
+.intro-section .slogan {
+    font-weight: bold; 
+    color: #ffaa00; 
+}
+
+.destaque {
+    font-weight: bold; 
+    color: #ffaa00; 
+}
+
+
+.intro-section .intro-text {
+    font-size: 16px; 
+    line-height: 1.6; 
+    max-width: 800px; 
+    margin: 20px auto 0; 
+}
+
+/* Estilos para a seção de cadastro e seus campos */
+#signup-section input[type="text"],
+#signup-section input[type="email"],
+#signup-section input[type="password"],
+#search-input {
+    width: calc(100% - 20px); 
+    padding: 15px; 
+    margin-bottom: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%; /* Faz com que o botão ocupe toda a largura da seção */
+    padding: 15px; /* Aumenta o padding do botão, tornando-o mais fácil de clicar */
+    margin-top: 10px; /* Espaço entre o último campo de input e o botão */
+    background-color: #ffaa00; /* Cor de fundo do botão */
+    color: white; /* Cor do texto do botão */
+    border: none; /* Remove a borda do botão */
+    border-radius: 5px; /* Bordas arredondadas para o botão */
+    cursor: pointer; /* Muda o cursor para indicar que o botão é clicável */
+}
+
+/* Media query para telas pequenas (ex: celulares) */
+@media (max-width: 600px) {
+    body {
+        padding: 10px; /* Reduz o padding do corpo em telas menores para utilizar melhor o espaço */
+    }
+
+    .section, .header { /* Ajusta as seções e o cabeçalho para telas menores */
+        width: 100%; /* Faz com que as seções e o cabeçalho ocupem toda a largura da tela */
+        box-sizing: border-box; /* Garante que o padding não adicione largura extra aos elementos */
+    }
 }
 
 .header, #recommendations-section, #search-section, #signup-section, #results-section {
@@ -24,6 +98,11 @@ body {
 #logo {
     height: 130px;
     width: 90px;
+}
+
+#popcorn {
+    height: 100px;
+    width: 100px;
 }
 
 h2 {
@@ -60,3 +139,8 @@ button {
     border: none;
     border-radius: 4px;
 }
+
+input:invalid {
+    border: 2px solid red;
+}
+
