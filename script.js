@@ -67,6 +67,47 @@ document.getElementById('clear-button').addEventListener('click', () => {
     document.getElementById('search-input').value = '';
 });
 
+document.getElementById('signup-button').addEventListener('click', (event) => {
+    event.preventDefault(); // Impede o envio do formulário
+
+    const firstName = document.getElementById('signup-firstname').value;
+    const lastName = document.getElementById('signup-lastname').value;
+    const email = document.getElementById('signup-email').value;
+    const phone = document.getElementById('signup-phone').value; // Opcional
+    const password = document.getElementById('signup-password').value;
+    const responseDiv = document.getElementById('signup-response');
+
+    // Preparação dos dados para a requisição
+    const data = {
+        nome: firstName,
+        sobrenome: lastName,
+        email: email,
+        telefone: phone,
+        senha: password
+    };
+
+    // Requisição para o endpoint de cadastro no servidor local
+    fetch('http://127.0.0.1:8080/cadastro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Trata a resposta do servidor
+        if (data && data.message) {
+            responseDiv.textContent = data.message;
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao cadastrar:', error);
+        responseDiv.textContent = 'Falha: ocorreu um erro, tente novamente';
+    });
+});
+
+
 /* document.getElementById('signup-button').addEventListener('click', () => {
     const email = document.getElementById('signup-email').value;
     if (!email) {
@@ -77,7 +118,8 @@ document.getElementById('clear-button').addEventListener('click', () => {
     alert('Cadastro realizado com sucesso! Você receberá nossas recomendações em breve.');
     document.getElementById('signup-email').value = '';
 }); */
-document.getElementById('signup-button').addEventListener('click', (event) => {
+
+/* document.getElementById('signup-button').addEventListener('click', (event) => {
     event.preventDefault(); // Impede o envio do formulário
 
     const firstName = document.getElementById('signup-firstname').value;
@@ -141,4 +183,4 @@ document.getElementById('signup-button').addEventListener('click', (event) => {
         console.error('Erro ao cadastrar:', error);
         responseDiv.textContent = 'Falha: ocorreu um erro, tente novamente';
     });
-});
+}); */
