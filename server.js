@@ -7,6 +7,7 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || 'localhost';
@@ -59,7 +60,8 @@ const schemaCadastro = Joi.object({
         'string.pattern.base': `Telefone deve conter apenas números`
     }),
     senha: Joi.string().pattern(new RegExp('^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$')).required().messages({
-        'string.pattern.base': `Senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial (!@#$&*)`
+        'string.pattern.base': `Senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial (!@#$&*)`,
+        'string.empty': `Senha não pode estar vazia`
     })
 });
 
@@ -93,7 +95,7 @@ app.get('/usuario/email/:email', (req, res) => {
     });
 });
 
-app.post('/cadastro', async (req, res) => {
+/* app.post('/cadastro', async (req, res) => {
     try {
         const value = await schemaCadastro.validateAsync(req.body);
         const { nome, sobrenome, email, telefone, senha } = value;
@@ -109,6 +111,41 @@ app.post('/cadastro', async (req, res) => {
 
             db.run(`INSERT INTO cadastros (nome, sobrenome, email, telefone, senha) VALUES (?, ?, ?, ?, ?)`,
                 [nome, sobrenome, email, telefone, senha],
+                (err) => {
+                    if (err) {
+                        console.error(err.message);
+                        return res.status(500).json({ message: 'Erro ao salvar o cadastro.' });
+                    }
+                    res.status(200).json({ message: 'Cadastro realizado com sucesso!' });
+                }
+            );
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({ message: err.details[0].message });
+    }
+}); */
+
+app.post('/cadastro', async (req, res) => {
+    try {
+        const value = await schemaCadastro.validateAsync(req.body);
+        const { nome, sobrenome, email, telefone, senha } = value;
+
+        db.get(`SELECT * FROM cadastros WHERE email = ?`, [email], async (err, row) => {
+            if (err) {
+                console.error(err.message);
+                return res.status(500).json({ message: 'Erro no servidor.' });
+            }
+            if (row) {
+                return res.status(400).json({ message: 'Este email já está cadastrado.' });
+            }
+
+            // Criptografar a senha antes de salvar
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(senha, saltRounds);
+
+            db.run(`INSERT INTO cadastros (nome, sobrenome, email, telefone, senha) VALUES (?, ?, ?, ?, ?)`,
+                [nome, sobrenome, email, telefone, hashedPassword],
                 (err) => {
                     if (err) {
                         console.error(err.message);
@@ -226,8 +263,8 @@ app.listen(PORT, HOST, () => {
     const RESET = "\x1b[0m";
     const GREEN = "\x1b[32m";
     const YELLOW = "\x1b[33m"
-    console.log(`${GREEN}**Url Base em http://${HOST}:${PORT}${RESET}`);
-    console.log(`${YELLOW}**Documentação em http://${HOST}:${PORT}/api-docs${RESET}`);
+    console.log(`${GREEN}**Url Base: http://${HOST}:${PORT}${RESET}`);
+    console.log(`${YELLOW}**Documentação: http://${HOST}:${PORT}/api-docs${RESET}`);
 });
 
 /**
