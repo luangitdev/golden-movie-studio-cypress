@@ -9,6 +9,16 @@ body {
     width: 100%;
 }
 
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #ffaa00;
+    color: white;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
 .intro-section {
     width: 80%;
     background-color: #fff;
