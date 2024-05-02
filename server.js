@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 // Servindo arquivos estáticos
 app.use(express.static('public/public'));
-app.use('/src', express.static('src'));
+//app.use('/src', express.static('src'));
 
 const db = new sqlite3.Database(('cadastros.db'), sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
@@ -94,37 +94,6 @@ app.get('/usuario/email/:email', (req, res) => {
         }
     });
 });
-
-/* app.post('/cadastro', async (req, res) => {
-    try {
-        const value = await schemaCadastro.validateAsync(req.body);
-        const { nome, sobrenome, email, telefone, senha } = value;
-
-        db.get(`SELECT * FROM cadastros WHERE email = ?`, [email], (err, row) => {
-            if (err) {
-                console.error(err.message);
-                return res.status(500).json({ message: 'Erro no servidor.' });
-            }
-            if (row) {
-                return res.status(400).json({ message: 'Este email já está cadastrado.' });
-            }
-
-            db.run(`INSERT INTO cadastros (nome, sobrenome, email, telefone, senha) VALUES (?, ?, ?, ?, ?)`,
-                [nome, sobrenome, email, telefone, senha],
-                (err) => {
-                    if (err) {
-                        console.error(err.message);
-                        return res.status(500).json({ message: 'Erro ao salvar o cadastro.' });
-                    }
-                    res.status(200).json({ message: 'Cadastro realizado com sucesso!' });
-                }
-            );
-        });
-    } catch (err) {
-        console.error(err);
-        return res.status(400).json({ message: err.details[0].message });
-    }
-}); */
 
 app.post('/cadastro', async (req, res) => {
     try {
@@ -264,7 +233,7 @@ app.listen(PORT, HOST, () => {
     const GREEN = "\x1b[32m";
     const YELLOW = "\x1b[33m"
     console.log(`${GREEN}**Url Base: http://${HOST}:${PORT}${RESET}`);
-    console.log(`${YELLOW}**Documentação: http://${HOST}:${PORT}/api-docs${RESET}`);
+    console.log(`${YELLOW}**Documentação : http://${HOST}:${PORT}/api-docs${RESET}`);
 });
 
 /**
