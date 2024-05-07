@@ -30,24 +30,18 @@ npm start
 ```
 
 No console vai aparecer os endereços do site e do banco. 
-O site você acessar em: http://127.0.0.1:8080/ ou http://localhost:8080/
+O site você acessaem: http://127.0.0.1:8080
 
-O banco funciona em memória em http://0.0.0.0:3000. 
-Após parar o servidor ( fechar o console ) os dados são perdidos. 
+O banco funciona em memória em http://localhost:3000 
+E a documentação em: http://localhost:3000/api-docs
+Após parar o servidor ( fechar o console ) o serviço para de excutar.
 
-#### Para rodar executar o Cypress via Dashboard:
-```
-npx cypress open 
-```
-
-### Bibliotecas de apoio:
--Cypress: Framework de automação: https://cypress.io/
 
 ### Bom Jornada ;) 
 Fábio & José Ernesto
 Qualidade de software
 
-Apoio: Leonardo Souza
+Apoio: Leonardo Souza, Aline Keiko e Willivan
 
 
 
