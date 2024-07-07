@@ -1,8 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-// const sqlite3 = require('sqlite3').verbose(); // Comentado
-const { Pool } = require('pg');
+const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
@@ -21,44 +20,8 @@ app.use(bodyParser.json());
 
 // Servindo arquivos estáticos
 app.use(express.static('public/public'));
-// app.use('/src', express.static('src'));
+//app.use('/src', express.static('src'));
 
-// Configuração do PostgreSQL
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-
-pool.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar ao banco de dados:', err.message);
-  } else {
-    console.log('Conectado ao banco de dados.');
-
-    // Criar a tabela se não existir
-    pool.query(`
-      CREATE TABLE IF NOT EXISTS cadastros (
-        id SERIAL PRIMARY KEY,
-        nome TEXT NOT NULL,
-        sobrenome TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        telefone TEXT,
-        senha TEXT NOT NULL
-      );
-    `, (err, res) => {
-      if (err) {
-        console.error('Erro ao criar a tabela:', err.message);
-      } else {
-        console.log('Tabela "cadastros" criada com sucesso.');
-      }
-    });
-  }
-});
-
-// Código comentado para o SQLite
-/*
 const db = new sqlite3.Database('cadastros.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
         console.error('Erro ao conectar ao banco de dados:', err.message);
@@ -66,6 +29,7 @@ const db = new sqlite3.Database('cadastros.db', sqlite3.OPEN_READWRITE | sqlite3
     }
     console.log('Conectado ao banco de dados.');
 });
+
 
 db.run(`
     CREATE TABLE IF NOT EXISTS cadastros (
@@ -77,7 +41,6 @@ db.run(`
         senha TEXT NOT NULL
     )
 `);
-*/
 
 const schemaCadastro = Joi.object({
     nome: Joi.string().pattern(new RegExp('^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$')).required().messages({
@@ -105,12 +68,11 @@ const schemaCadastro = Joi.object({
 
 app.get('/usuario/id/:id', (req, res) => {
     const id = req.params.id;
-    pool.query("SELECT id, nome, email FROM cadastros WHERE id = $1", [id], (err, result) => {
+    db.get("SELECT id, nome, email FROM cadastros WHERE id = ?", [id], (err, row) => {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ message: 'Erro ao buscar o usuário.' });
         }
-        const row = result.rows[0];
         if (row) {
             return res.status(200).json(row);
         } else {
@@ -121,12 +83,11 @@ app.get('/usuario/id/:id', (req, res) => {
 
 app.get('/usuario/email/:email', (req, res) => {
     const email = req.params.email;
-    pool.query("SELECT id, nome, email FROM cadastros WHERE email = $1", [email], (err, result) => {
+    db.get("SELECT id, nome, email FROM cadastros WHERE email = ?", [email], (err, row) => {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ message: 'Erro ao buscar o usuário.' });
         }
-        const row = result.rows[0];
         if (row) {
             return res.status(200).json(row);
         } else {
@@ -140,12 +101,12 @@ app.post('/cadastro', async (req, res) => {
         const value = await schemaCadastro.validateAsync(req.body);
         const { nome, sobrenome, email, telefone, senha } = value;
 
-        pool.query(`SELECT * FROM cadastros WHERE email = $1`, [email], async (err, result) => {
+        db.get(`SELECT * FROM cadastros WHERE email = ?`, [email], async (err, row) => {
             if (err) {
                 console.error(err.message);
                 return res.status(500).json({ message: 'Erro no servidor.' });
             }
-            if (result.rows.length > 0) {
+            if (row) {
                 return res.status(400).json({ message: 'Este email já está cadastrado.' });
             }
 
@@ -153,7 +114,7 @@ app.post('/cadastro', async (req, res) => {
             const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
-            pool.query(`INSERT INTO cadastros (nome, sobrenome, email, telefone, senha) VALUES ($1, $2, $3, $4, $5)`,
+            db.run(`INSERT INTO cadastros (nome, sobrenome, email, telefone, senha) VALUES (?, ?, ?, ?, ?)`,
                 [nome, sobrenome, email, telefone, hashedPassword],
                 (err) => {
                     if (err) {
@@ -189,7 +150,7 @@ const swaggerOptions = {
         tags: [
             {
                 name: 'Usuários',
-               	description: 'Operações de gerenciamento de usuários'
+                description: 'Operações de gerenciamento de usuários'
             },
             {
                 name: 'Filmes',
@@ -272,8 +233,9 @@ app.listen(PORT, HOST, () => {
     const RESET = "\x1b[0m";
     const GREEN = "\x1b[32m";
     const YELLOW = "\x1b[33m"
-    console.log(`${GREEN}**Url Base: ${process.env.BASE_URL || `http://127.0.0.1:${PORT}`}${RESET}`);
-    console.log(`${YELLOW}**Documentação : ${process.env.BASE_URL || `http://${HOST}:${PORT}/api-docs`}${RESET}`);
+    //console.log(`${GREEN}**Url Base: http://${HOST}:${PORT}${RESET}`);
+    console.log(`${GREEN}**Url Base: http://127.0.0.1:8080/${RESET}`);
+    console.log(`${YELLOW}**Documentação : http://${HOST}:${PORT}/api-docs${RESET}`);
 });
 
 /**

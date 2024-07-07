@@ -1,5 +1,5 @@
 const API_KEY = 'f7f22d30'; 
-//const API_URL = 'http://localhost:3000/cadastro';
+const API_URL = 'http://localhost:3000/cadastro';
 
 document.addEventListener('DOMContentLoaded', fetchRecommendations);
 document.getElementById('search-button').addEventListener('click', searchMovies);
