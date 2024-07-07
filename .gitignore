@@ -130,3 +130,5 @@ dist
 
 cadastros.db
 server.js_old
+.vercel
+.env*.local
