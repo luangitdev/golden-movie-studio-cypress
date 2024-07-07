@@ -272,9 +272,8 @@ app.listen(PORT, HOST, () => {
     const RESET = "\x1b[0m";
     const GREEN = "\x1b[32m";
     const YELLOW = "\x1b[33m"
-    //console.log(`${GREEN}**Url Base: http://${HOST}:${PORT}${RESET}`);
-    console.log(`${GREEN}**Url Base: http://127.0.0.1:8080/${RESET}`);
-    console.log(`${YELLOW}**Documentação : http://${HOST}:${PORT}/api-docs${RESET}`);
+    console.log(`${GREEN}**Url Base: ${process.env.BASE_URL || `http://127.0.0.1:${PORT}`}${RESET}`);
+    console.log(`${YELLOW}**Documentação : ${process.env.BASE_URL || `http://${HOST}:${PORT}/api-docs`}${RESET}`);
 });
 
 /**
