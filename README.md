@@ -35,10 +35,6 @@ O site você acessaem: http://127.0.0.1:8080
 A documentação funciona em: http://localhost/api-docs
 
 
-NOTA: Caso dê algum erro no carregamento, pode parar o servidor com Ctrl + C e na sequência instalar esses pacote: npm install -g http-server
-
-Depois basta iniciar novamente com : npm start 
-
 ### Bom Jornada ;) 
 Fábio & José Ernesto
 Qualidade de software
