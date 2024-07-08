@@ -1,6 +1,6 @@
 const API_KEY = 'f7f22d30'; 
 const localURL = 'http://localhost:3000/cadastro';
-const productionURL = 'https://8i5962r1e8.execute-api.us-east-1.amazonaws.com/cadastro';
+const productionURL = 'https://8i5962r1e8.execute-api.us-east-1.amazonaws.com';
 
 const API_URL = window.location.hostname === 'localhost' ? localURL : productionURL;
 
