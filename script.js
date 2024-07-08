@@ -1,6 +1,6 @@
 const API_KEY = 'f7f22d30'; 
 //const API_URL = 'http://localhost:3000/cadastro';
-const API_URL = 'https://8i5962r1e8.execute-api.us-east-1.amazonaws.com/cadastro';
+const API_URL = 'https://8i5962r1e8.execute-api.us-east-1.amazonaws.com';
 
 
 document.addEventListener('DOMContentLoaded', fetchRecommendations);
