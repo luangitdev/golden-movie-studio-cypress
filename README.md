@@ -35,11 +35,5 @@ O site você acessaem: http://127.0.0.1:8080
 A documentação funciona em: http://localhost/api-docs
 
 
-### Bom Jornada ;) 
-Fábio & José Ernesto
-Qualidade de software
-Apoio: Leonardo Souza
-
-
 
 
